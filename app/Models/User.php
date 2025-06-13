@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -14,7 +13,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que se pueden asignar masivamente.
      *
      * @var list<string>
      */
@@ -25,7 +24,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Los atributos que deben ocultarse en la serialización.
      *
      * @var list<string>
      */
@@ -35,7 +34,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Los atributos que deben convertirse a otros tipos.
      *
      * @return array<string, string>
      */
@@ -45,5 +44,29 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Un usuario tiene muchos restaurantes.
+     */
+    public function restaurants()
+    {
+        return $this->hasMany(Restaurant::class);
+    }
+
+    /**
+     * Un usuario puede tener muchos restaurantes favoritos (relación muchos a muchos).
+     */
+    public function favorites()
+    {
+        return $this->belongsToMany(Restaurant::class, 'favorites');
+    }
+
+    /**
+     * Un usuario puede tener muchas reseñas.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }
